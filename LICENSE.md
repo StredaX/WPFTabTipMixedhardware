@@ -1,5 +1,6 @@
 MIT License
 
+Copyright (c) 2019 Morgan SOULLEZ
 Copyright (c) 2016 Maxim Fedotov
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

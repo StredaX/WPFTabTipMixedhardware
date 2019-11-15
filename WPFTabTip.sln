@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFTabTip", "WPFTabTip\WPFTabTip.csproj", "{BE335058-C5DE-4EB6-8EEB-8E6FC9F5081B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFTabTipMixedHarware", "WPFTabTip\WPFTabTipMixedHarware.csproj", "{BE335058-C5DE-4EB6-8EEB-8E6FC9F5081B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UITest", "UITest\UITest.csproj", "{A0E4A0A6-118A-4ED8-9AEE-B127B565EE02}"
 EndProject
@@ -30,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E62EDD06-0137-455E-B32A-4D3D34BACC58}
 	EndGlobalSection
 EndGlobal

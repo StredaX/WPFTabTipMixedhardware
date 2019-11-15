@@ -3,7 +3,7 @@ using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
 
-namespace WPFTabTip
+namespace WPFTabTipMixedHarware
 {
     public enum HardwareKeyboardIgnoreOptions
     {
@@ -100,7 +100,7 @@ namespace WPFTabTip
             return ListOfKeyboardsToIgnore.Contains(description);
         }
 
-        internal static HardwareKeyboardIgnoreOptions IgnoreOptions = HardwareKeyboardIgnoreOptions.DoNotIgnore;
+        internal static HardwareKeyboardIgnoreOptions IgnoreOptions = HardwareKeyboardIgnoreOptions.IgnoreAll;
 
         /// <summary>
         /// Description of keyboards to ignore if there is only one instance of given keyboard.

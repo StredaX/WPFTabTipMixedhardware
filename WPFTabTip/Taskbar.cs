@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace WPFTabTip
+namespace WPFTabTipMixedHarware
 {
     internal enum TaskbarPosition
     {
@@ -28,7 +28,7 @@ namespace WPFTabTip
         public Point Location => Bounds.Location;
 
         public Size Size => Bounds.Size;
-        
+
         //Always returns false under Windows 7
         public bool AlwaysOnTop
         {
@@ -47,16 +47,16 @@ namespace WPFTabTip
 
             APPBARDATA data = new APPBARDATA
             {
-                cbSize = (uint) Marshal.SizeOf(typeof (APPBARDATA)),
+                cbSize = (uint)Marshal.SizeOf(typeof(APPBARDATA)),
                 hWnd = taskbarHandle
             };
             IntPtr result = Shell32.SHAppBarMessage(ABM.GetTaskbarPos, ref data);
             if (result != IntPtr.Zero)
             {
-                Position = (TaskbarPosition) data.uEdge;
+                Position = (TaskbarPosition)data.uEdge;
                 Bounds = Rectangle.FromLTRB(data.rc.left, data.rc.top, data.rc.right, data.rc.bottom);
 
-                data.cbSize = (uint) Marshal.SizeOf(typeof(APPBARDATA));
+                data.cbSize = (uint)Marshal.SizeOf(typeof(APPBARDATA));
                 result = Shell32.SHAppBarMessage(ABM.GetState, ref data);
                 int state = result.ToInt32();
                 AlwaysOnTop = (state & ABS.AlwaysOnTop) == ABS.AlwaysOnTop;

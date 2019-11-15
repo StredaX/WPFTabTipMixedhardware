@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
 
-namespace WPFTabTip
+namespace WPFTabTipMixedHarware
 {
+    /// <summary>
+    /// Automate TabTip diplay/closed 
+    /// </summary>
     public static class TabTipAutomation
     {
         static TabTipAutomation()
@@ -28,21 +32,31 @@ namespace WPFTabTip
         private static readonly List<Type> BindedUIElements = new List<Type>();
 
         /// <summary>
-        /// By default TabTip automation happens only when no keyboard is connected to device.
+        /// By default TabTip automation happens even if keyboard is connected to device.
         /// Change IgnoreHardwareKeyboard if you want to automate
-        /// TabTip even if keyboard is connected.
+        /// TabTip only when no keyboard is connected.
         /// </summary>
         public static HardwareKeyboardIgnoreOptions IgnoreHardwareKeyboard
         {
             get { return HardwareKeyboard.IgnoreOptions; }
-            set { HardwareKeyboard.IgnoreOptions = value; } 
+            set { HardwareKeyboard.IgnoreOptions = value; }
         }
-      
+
+        /// <summary>
+        /// Define if mouse events must display the keyboard
+        /// </summary>
+        public static bool EnableForMouseEvent { get; set; }
+
+        /// <summary>
+        /// Close keyboard only if no other UIElement got focus between this waiting time
+        /// </summary>
+        public static TimeSpan WaitBeforeCloseKeyboard { get; set; } = TimeSpan.FromMilliseconds(100);
+
         /// <summary>
         /// Subscribe to this event if you want to know about exceptions (errors) in this library
         /// </summary>
         public static event Action<Exception> ExceptionCatched;
-      
+
         /// <summary>
         /// Description of keyboards to ignore if there is only one instance of given keyboard.
         /// If you want to ignore some ghost keyboard, add it's description to this list
@@ -60,7 +74,7 @@ namespace WPFTabTip
             focusObservable
                 .ObserveOn(Scheduler.Default)
                 .Where(_ => IgnoreHardwareKeyboard == HardwareKeyboardIgnoreOptions.IgnoreAll || !HardwareKeyboard.IsConnectedAsync().Result)
-                .Throttle(TimeSpan.FromMilliseconds(100)) // Close only if no other UIElement got focus in 100 ms
+                .Throttle(WaitBeforeCloseKeyboard) // Close only if no other UIElement got focus in 100 ms
                 .Where(tuple => tuple.Item2 == false)
                 .Do(_ => TabTip.Close())
                 .Subscribe(_ => tabTipClosedSubject.OnNext(true));
@@ -83,7 +97,7 @@ namespace WPFTabTip
 
         /// <summary>
         /// Automate TabTip for given UIElement.
-        /// Keyboard opens on GotFocusEvent or TouchDownEvent (if focused already) 
+        /// Keyboard opens on GotFocusEvent, PreviewMouseDownEvent (i.e <seealso cref="EnableForMouseEvent"/>) or TouchDownEvent (if focused already) 
         /// and closes on LostFocusEvent.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -106,15 +120,29 @@ namespace WPFTabTip
                 handledEventsToo: true);
 
             EventManager.RegisterClassHandler(
-                classType: typeof(T), 
-                routedEvent: UIElement.GotFocusEvent, 
-                handler: new RoutedEventHandler((s, e) => FocusSubject.OnNext(new Tuple<UIElement, bool>((UIElement) s, true))), 
-                handledEventsToo: true);
+                                classType: typeof(T),
+                                routedEvent: UIElement.PreviewMouseDownEvent,
+                                handler: new RoutedEventHandler((s, e) =>
+                                {
+                                    if (EnableForMouseEvent && ((UIElement)s).IsFocused)
+                                        FocusSubject.OnNext(new Tuple<UIElement, bool>((UIElement)s, true));
+                                }),
+                                handledEventsToo: true);
 
             EventManager.RegisterClassHandler(
-                classType: typeof(T), 
-                routedEvent: UIElement.LostFocusEvent, 
-                handler: new RoutedEventHandler((s, e) => FocusSubject.OnNext(new Tuple<UIElement, bool>((UIElement) s, false))), 
+                                classType: typeof(T),
+                                routedEvent: UIElement.GotFocusEvent,
+                                handler: new RoutedEventHandler((s, e) =>
+                                {
+                                    if (EnableForMouseEvent)
+                                        FocusSubject.OnNext(new Tuple<UIElement, bool>((UIElement)s, true));
+                                }),
+                                handledEventsToo: true);
+
+            EventManager.RegisterClassHandler(
+                classType: typeof(T),
+                routedEvent: UIElement.LostFocusEvent,
+                handler: new RoutedEventHandler((s, e) => FocusSubject.OnNext(new Tuple<UIElement, bool>((UIElement)s, false))),
                 handledEventsToo: true);
 
             BindedUIElements.Add(typeof(T));

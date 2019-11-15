@@ -6,7 +6,7 @@ using System.Linq;
 using System.Management;
 using System.Windows;
 using System.Windows.Controls;
-using WPFTabTip;
+using WPFTabTipMixedHarware;
 
 namespace UITest
 {
@@ -19,7 +19,6 @@ namespace UITest
         {
             InitializeComponent();
 
-            TabTipAutomation.IgnoreHardwareKeyboard = HardwareKeyboardIgnoreOptions.IgnoreAll;
             TabTipAutomation.BindTo<TextBox>();
             TabTipAutomation.BindTo<RichTextBox>();
             TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;

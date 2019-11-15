@@ -1,15 +1,21 @@
-# WPFTabTip
-Simple TabTip / Virtual Keyboard integration for WPF apps on Win 10
+# WPFTabTipMixedhardware
+Simple TabTip / Virtual Keyboard integration for WPF apps with touchscreen and/or keyboard
 
-## Simple to use
+## Package
 
-You can bind TabTip automation logic to any `UIElement`. Virtual Keyboard will open when any such element will get focus, and it will close when element will lose focus. Not only that, but `TabTipAutomation` will move `UIElement` (or `Window`) into  view, so that TabTip will not block focused element.
+Work in progress
 
-## Hardware keyboard detection
+## Getting started
 
-By default TabTip automation will occur only if no hardware keyboard is detected.
+You can bind TabTip automation logic to any `UIElement`. Virtual Keyboard will open when any such element will get touched (and mouse event with parameters), and it will close when element will lose focus. Not only that, but `TabTipAutomation` will move `UIElement` (or `Window`) into  view, so that TabTip will not block focused element.
 
-You can change that behavior by setting `TabTipAutomation.IgnoreHardwareKeyboard` to any of the following values:
+### Hardware keyboard detection and mouse event
+
+By default TabTip automation will occur only on touch, independently with hardware keyboard plugged.
+Default behavior can be change with two properties :
+
+- `TabTipAutomation.EnableForMouseEvent` : Will trigger open virtual keaybord on MouseClick event and Focus event
+- `TabTipAutomation.IgnoreHardwareKeyboard` : You can change the hardware keyboard detection with the following values :
 
 ```c#
 public enum HardwareKeyboardIgnoreOptions
@@ -58,10 +64,13 @@ new ManagementObjectSearcher(new SelectQuery("Win32_Keyboard")).Get()
                 .ToList();
 ```
 
-## Change keyboard layout
+### Change keyboard layout
 
 To specify keyboard layout to be used with certain element you can set `InputScope` property in xaml to one of the following:
 - Default
 - Url
 - EmailSmtpAddress
 - Number
+
+## Test
+You can test the behaviors with the included test application. Set UITest project as 'Set as startup projet' and run. 

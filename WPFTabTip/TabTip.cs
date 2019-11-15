@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 
-namespace WPFTabTip
+namespace WPFTabTipMixedHarware
 {
     public static class TabTip
     {
@@ -43,7 +43,7 @@ namespace WPFTabTip
         internal static event Action Closed;
 
         private static IntPtr GetTabTipWindowHandle() => FindWindow(TabTipWindowClassName, null);
-        
+
         internal static void OpenUndockedAndStartPoolingForClosedEvent()
         {
             OpenUndocked();
@@ -65,7 +65,7 @@ namespace WPFTabTip
         {
             const string TabTipAutoInvokeKey = "EnableDesktopModeAutoInvoke";
 
-            int EnableDesktopModeAutoInvoke = (int) (Registry.GetValue(TabTipRegistryKeyName, TabTipAutoInvokeKey, -1) ?? -1);
+            int EnableDesktopModeAutoInvoke = (int)(Registry.GetValue(TabTipRegistryKeyName, TabTipAutoInvokeKey, -1) ?? -1);
             if (EnableDesktopModeAutoInvoke != 1)
                 Registry.SetValue(TabTipRegistryKeyName, TabTipAutoInvokeKey, 1);
         }
@@ -78,7 +78,7 @@ namespace WPFTabTip
             const string TabTipDockedKey = "EdgeTargetDockedState";
             const string TabTipProcessName = "TabTip";
 
-            int docked = (int) (Registry.GetValue(TabTipRegistryKeyName, TabTipDockedKey, 1) ?? 1);
+            int docked = (int)(Registry.GetValue(TabTipRegistryKeyName, TabTipDockedKey, 1) ?? 1);
             if (docked == 1)
             {
                 Registry.SetValue(TabTipRegistryKeyName, TabTipDockedKey, 0);

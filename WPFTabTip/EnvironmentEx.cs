@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace WPFTabTip
+namespace WPFTabTipMixedHarware
 {
     internal enum OSVersion
     {
@@ -34,7 +34,7 @@ namespace WPFTabTip
         {
             RegistryKey rk = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
             if (rk == null) return "";
-            return (string) rk.GetValue("ProductName");
+            return (string)rk.GetValue("ProductName");
         }
     }
 }

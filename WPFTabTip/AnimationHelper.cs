@@ -8,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Point = System.Windows.Point;
 
-namespace WPFTabTip
+namespace WPFTabTipMixedHarware
 {
     internal static class AnimationHelper
     {
@@ -25,10 +25,10 @@ namespace WPFTabTip
 
             using (Graphics graphics = Graphics.FromHwnd(windowHandle))
                 return Rectangle.FromLTRB(
-                    left: (int) (rectangleToConvert.Left * logicalUnitDpi / graphics.DpiX), 
-                    top: (int) (rectangleToConvert.Top * logicalUnitDpi / graphics.DpiY), 
-                    right: (int) (rectangleToConvert.Right * logicalUnitDpi / graphics.DpiX), 
-                    bottom: (int) (rectangleToConvert.Bottom * logicalUnitDpi / graphics.DpiY));
+                    left: (int)(rectangleToConvert.Left * logicalUnitDpi / graphics.DpiX),
+                    top: (int)(rectangleToConvert.Top * logicalUnitDpi / graphics.DpiY),
+                    right: (int)(rectangleToConvert.Right * logicalUnitDpi / graphics.DpiX),
+                    bottom: (int)(rectangleToConvert.Bottom * logicalUnitDpi / graphics.DpiY));
         }
 
         private static Point ToPointInLogicalUnits(this Point point, DependencyObject element)
@@ -59,7 +59,7 @@ namespace WPFTabTip
                 bottom: (int)rect.Bottom);
         }
 
-        private static Rectangle GetCurrentScreenBounds(DependencyObject element) => 
+        private static Rectangle GetCurrentScreenBounds(DependencyObject element) =>
             new Screen(Window.GetWindow(element)).Bounds.ToRectangleInLogicalUnits(element);
 
         private static Rectangle GetWorkAreaWithTabTipOpened(DependencyObject element)
@@ -93,9 +93,9 @@ namespace WPFTabTip
                         bottom: taskbarBounds.Top);
                 case TaskbarPosition.Top:
                     return Rectangle.FromLTRB(
-                        left: currentScreenBounds.Left, 
-                        top: taskbarBounds.Bottom, 
-                        right: currentScreenBounds.Right, 
+                        left: currentScreenBounds.Left,
+                        top: taskbarBounds.Bottom,
+                        right: currentScreenBounds.Right,
                         bottom: currentScreenBounds.Bottom);
                 default:
                     return currentScreenBounds;
@@ -164,7 +164,7 @@ namespace WPFTabTip
 
             DoubleAnimation moveAnimation = new DoubleAnimation
             {
-                EasingFunction = new CircleEase {EasingMode = EasingMode.EaseOut},
+                EasingFunction = new CircleEase { EasingMode = EasingMode.EaseOut },
                 Duration = new Duration(TimeSpan.FromSeconds(0.35)),
                 FillBehavior = (visualRoot is Window) ? FillBehavior.Stop : FillBehavior.HoldEnd
             };
@@ -294,9 +294,9 @@ namespace WPFTabTip
         private static Rectangle GetWindowRectangle(Window window)
         {
             return Rectangle.FromLTRB(
-                left: (int)window.Left, 
-                top: (int)window.Top, 
-                right: (int)(window.Left + window.Width), 
+                left: (int)window.Left,
+                top: (int)window.Top,
+                right: (int)(window.Left + window.Width),
                 bottom: (int)(window.Top + window.Height));
         }
 
@@ -322,7 +322,7 @@ namespace WPFTabTip
             {
                 ExceptionCatched?.Invoke(ex);
             }
-        } 
+        }
 
     }
 }
