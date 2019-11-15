@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace WPFTabTipMixedHarware
+namespace WPFTabTipMixedHardware
 {
     internal enum TaskbarPosition
     {

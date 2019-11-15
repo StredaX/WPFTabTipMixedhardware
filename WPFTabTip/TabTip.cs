@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Win32;
 
-namespace WPFTabTipMixedHarware
+namespace WPFTabTipMixedHardware
 {
     public static class TabTip
     {
@@ -46,6 +46,7 @@ namespace WPFTabTipMixedHarware
 
         internal static void OpenUndockedAndStartPoolingForClosedEvent()
         {
+            System.Diagnostics.Debug.WriteLine("TabTip.OpenUndockedAndStartPoolingForClosedEvent");
             OpenUndocked();
             StartPoolingForTabTipClosedEvent();
         }
@@ -93,6 +94,7 @@ namespace WPFTabTipMixedHarware
         /// </summary>
         public static void Close()
         {
+            System.Diagnostics.Debug.WriteLine("TabTip.Close");
             const int WM_SYSCOMMAND = 274;
             const int SC_CLOSE = 61536;
             SendMessage(GetTabTipWindowHandle().ToInt32(), WM_SYSCOMMAND, SC_CLOSE, 0);

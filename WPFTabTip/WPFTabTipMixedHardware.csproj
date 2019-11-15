@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net47</TargetFrameworks>
+    <Title>WPFTabTipMixedHardware</Title>
+    <Version>1.3.1</Version>
+    <Copyright></Copyright>
+    <Description>Simple TabTip / Virtual Keyboard integration for WPF apps with mixed Keyboard and Touchscreen</Description>
+    <Authors>Morgan SOULLEZ</Authors>
+    <Company>Morgan SOULLEZ</Company>
+    <PackageProjectUrl>https://github.com/seuleuzeuh/WPFTabTipMixedhardware/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/seuleuzeuh/WPFTabTipMixedhardware/</RepositoryUrl>
+    <PackageTags>WPF Touchscreen TabTip Keyboard Virtual W10</PackageTags>
+    <PackageReleaseNotes>- Fix change focus element only with touchscreen (MouseEvent not activated)
+- Fix Namespace typo</PackageReleaseNotes>
+    <AssemblyVersion>1.3.1</AssemblyVersion>
+    <FileVersion>1.3.1</FileVersion>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="System.Reactive.Core" Version="4.2.0" />
+    <PackageReference Include="System.Reactive.Interfaces" Version="4.2.0" />
+    <PackageReference Include="System.Reactive.Linq" Version="4.2.0" />
+    <PackageReference Include="System.Reactive.PlatformServices" Version="4.2.0" />
+    <PackageReference Include="System.Reactive.Windows.Threading" Version="4.2.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Windows" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

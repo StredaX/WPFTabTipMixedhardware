@@ -5,8 +5,9 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows;
+using System.Windows.Input;
 
-namespace WPFTabTipMixedHarware
+namespace WPFTabTipMixedHardware
 {
     /// <summary>
     /// Automate TabTip diplay/closed 
@@ -48,6 +49,11 @@ namespace WPFTabTipMixedHarware
         public static bool EnableForMouseEvent { get; set; }
 
         /// <summary>
+        /// If true (default) always try to open keyboard on Touch and MouseClickEvent even if component is not yet focused.
+        /// </summary>
+        public static bool AlwaysOpenKeyboardOnClickTouchEvent { get; set; } = true;
+
+        /// <summary>
         /// Close keyboard only if no other UIElement got focus between this waiting time
         /// </summary>
         public static TimeSpan WaitBeforeCloseKeyboard { get; set; } = TimeSpan.FromMilliseconds(100);
@@ -74,14 +80,31 @@ namespace WPFTabTipMixedHarware
             focusObservable
                 .ObserveOn(Scheduler.Default)
                 .Where(_ => IgnoreHardwareKeyboard == HardwareKeyboardIgnoreOptions.IgnoreAll || !HardwareKeyboard.IsConnectedAsync().Result)
-                .Throttle(WaitBeforeCloseKeyboard) // Close only if no other UIElement got focus in 100 ms
-                .Where(tuple => tuple.Item2 == false)
+                .Throttle(WaitBeforeCloseKeyboard) // Close only if no other UIElement got focus in `WaitBeforeCloseKeyboard` ms
+                .Where(tuple => tuple.Item2 == false && !AnotherAuthorizedElementFocused())
                 .Do(_ => TabTip.Close())
                 .Subscribe(_ => tabTipClosedSubject.OnNext(true));
 
             tabTipClosedSubject
                 .ObserveOnDispatcher()
                 .Subscribe(_ => AnimationHelper.GetEverythingInToWorkAreaWithTabTipClosed());
+        }
+
+        private static bool AnotherAuthorizedElementFocused()
+        {
+            IInputElement inputElement = null;
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                inputElement = Keyboard.FocusedElement;
+            });
+
+            if (inputElement is UIElement element)
+            {
+                var type = inputElement.GetType();
+                return BindedUIElements.Any(t => t == type || type.IsAssignableFrom(t) || t.IsAssignableFrom(type));
+            }
+
+            return false;
         }
 
         private static void AutomateTabTipOpen(IObservable<Tuple<UIElement, bool>> focusObservable)
@@ -114,8 +137,12 @@ namespace WPFTabTipMixedHarware
                 routedEvent: UIElement.TouchDownEvent,
                 handler: new RoutedEventHandler((s, e) =>
                 {
-                    if (((UIElement)s).IsFocused)
-                        FocusSubject.OnNext(new Tuple<UIElement, bool>((UIElement)s, true));
+                    if (s is UIElement element)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"TouchDownEvent on type {element.GetType()} from {element.ToString()}");
+                        if (AlwaysOpenKeyboardOnClickTouchEvent || element.IsFocused)
+                            FocusSubject.OnNext(new Tuple<UIElement, bool>(element, true));
+                    }
                 }),
                 handledEventsToo: true);
 
@@ -124,8 +151,12 @@ namespace WPFTabTipMixedHarware
                                 routedEvent: UIElement.PreviewMouseDownEvent,
                                 handler: new RoutedEventHandler((s, e) =>
                                 {
-                                    if (EnableForMouseEvent && ((UIElement)s).IsFocused)
-                                        FocusSubject.OnNext(new Tuple<UIElement, bool>((UIElement)s, true));
+                                    if (s is UIElement element)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine($"PreviewMouseDownEvent on type {element.GetType()} from {element.GetHashCode()} Source:{e.Source} OriginalSource:{e.OriginalSource}");
+                                        if (EnableForMouseEvent && (AlwaysOpenKeyboardOnClickTouchEvent || element.IsFocused))
+                                            FocusSubject.OnNext(new Tuple<UIElement, bool>(element, true));
+                                    }
                                 }),
                                 handledEventsToo: true);
 
@@ -134,15 +165,26 @@ namespace WPFTabTipMixedHarware
                                 routedEvent: UIElement.GotFocusEvent,
                                 handler: new RoutedEventHandler((s, e) =>
                                 {
-                                    if (EnableForMouseEvent)
-                                        FocusSubject.OnNext(new Tuple<UIElement, bool>((UIElement)s, true));
+                                    if (s is UIElement element)
+                                    {
+                                        System.Diagnostics.Debug.WriteLine($"GotFocusEvent on type {element.GetType()} from {element.ToString()}");
+                                        if (EnableForMouseEvent)
+                                            FocusSubject.OnNext(new Tuple<UIElement, bool>(element, true));
+                                    }
                                 }),
                                 handledEventsToo: true);
 
             EventManager.RegisterClassHandler(
                 classType: typeof(T),
                 routedEvent: UIElement.LostFocusEvent,
-                handler: new RoutedEventHandler((s, e) => FocusSubject.OnNext(new Tuple<UIElement, bool>((UIElement)s, false))),
+                handler: new RoutedEventHandler((s, e) =>
+                {
+                    if (s is UIElement element)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"LostFocusEvent on type {element.GetType()} from {element.ToString()}");
+                        FocusSubject.OnNext(new Tuple<UIElement, bool>(element, false));
+                    }
+                }),
                 handledEventsToo: true);
 
             BindedUIElements.Add(typeof(T));

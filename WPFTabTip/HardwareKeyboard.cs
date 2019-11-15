@@ -3,7 +3,7 @@ using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
 
-namespace WPFTabTipMixedHarware
+namespace WPFTabTipMixedHardware
 {
     public enum HardwareKeyboardIgnoreOptions
     {

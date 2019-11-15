@@ -1,9 +1,10 @@
 # WPFTabTipMixedhardware
-Simple TabTip / Virtual Keyboard integration for WPF apps with touchscreen and/or keyboard
+Simple TabTip / Virtual Keyboard integration for WPF apps with touchscreen and/or keyboard.
+Available via [nuget](https://www.nuget.org/packages/WPFTabTipMixedHardware/) ![Nuget](https://img.shields.io/nuget/dt/WPFTabTipMixedHarware)
 
 ## Package
 
-Work in progress
+![Nuget](https://img.shields.io/nuget/v/WPFTabTipMixedHardware)
 
 ## Getting started
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
 
-namespace WPFTabTipMixedHarware
+namespace WPFTabTipMixedHardware
 {
     internal enum OSVersion
     {
