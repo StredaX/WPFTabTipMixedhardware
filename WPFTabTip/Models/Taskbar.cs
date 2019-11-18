@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Runtime.InteropServices;
+using WPFTabTipMixedHardware.Models;
 
-namespace WPFTabTipMixedHardware
+namespace WPFTabTipMixedHardware.Models
 {
-    internal enum TaskbarPosition
-    {
-        Unknown = -1,
-        Left,
-        Top,
-        Right,
-        Bottom,
-    }
-
     internal sealed class Taskbar
     {
         private const string ClassName = "Shell_TrayWnd";

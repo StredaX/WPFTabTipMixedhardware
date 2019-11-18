@@ -2,39 +2,10 @@
 using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
+using WPFTabTipMixedHardware.Models;
 
-namespace WPFTabTipMixedHardware
+namespace WPFTabTipMixedHardware.Helpers
 {
-    public enum HardwareKeyboardIgnoreOptions
-    {
-        /// <summary>
-        /// Do not ignore any keyboard.
-        /// </summary>
-        DoNotIgnore,
-
-        /// <summary>
-        /// Ignore keyboard, if there is only one, and it's description 
-        /// can be found in ListOfKeyboardsToIgnore.
-        /// </summary>
-        IgnoreIfSingleInstanceOnList,
-
-        /// <summary>
-        /// Ignore keyboard, if there is only one.
-        /// </summary>
-        IgnoreIfSingleInstance,
-
-        /// <summary>
-        /// Ignore all keyboards for which the description 
-        /// can be found in ListOfKeyboardsToIgnore
-        /// </summary>
-        IgnoreIfOnList,
-
-        /// <summary>
-        /// Ignore all keyboards
-        /// </summary>
-        IgnoreAll
-    }
-
     internal static class HardwareKeyboard
     {
         private static bool? _isConnected;

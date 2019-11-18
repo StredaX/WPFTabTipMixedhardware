@@ -6,7 +6,7 @@ using System.Linq;
 using System.Management;
 using System.Windows;
 using System.Windows.Controls;
-using WPFTabTipMixedHarware;
+using WPFTabTipMixedHardware;
 
 namespace UITest
 {

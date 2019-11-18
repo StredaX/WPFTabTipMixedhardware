@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 
-namespace WPFTabTipMixedHardware
+namespace WPFTabTipMixedHardware.Helpers
 {
     internal static class PoolingTimer
     {

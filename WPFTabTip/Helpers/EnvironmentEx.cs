@@ -1,14 +1,8 @@
 ﻿using Microsoft.Win32;
+using WPFTabTipMixedHardware.Models;
 
-namespace WPFTabTipMixedHardware
+namespace WPFTabTipMixedHardware.Helpers
 {
-    internal enum OSVersion
-    {
-        Undefined,
-        Win7,
-        Win8Or81,
-        Win10
-    }
     internal static class EnvironmentEx
     {
         private static OSVersion OSVersion = OSVersion.Undefined;

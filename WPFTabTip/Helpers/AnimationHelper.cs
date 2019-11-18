@@ -6,9 +6,10 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using WPFTabTipMixedHardware.Models;
 using Point = System.Windows.Point;
 
-namespace WPFTabTipMixedHardware
+namespace WPFTabTipMixedHardware.Helpers
 {
     internal static class AnimationHelper
     {

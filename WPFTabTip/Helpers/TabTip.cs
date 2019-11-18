@@ -5,8 +5,9 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.Win32;
+using WPFTabTipMixedHardware.Models;
 
-namespace WPFTabTipMixedHardware
+namespace WPFTabTipMixedHardware.Helpers
 {
     public static class TabTip
     {
@@ -142,9 +143,7 @@ namespace WPFTabTipMixedHardware
         [SuppressMessage("ReSharper", "ConvertIfStatementToReturnStatement")]
         internal static Rectangle GetWouldBeTabTipRectangle()
         {
-            RECT rect;
-
-            if (!GetWindowRect(new HandleRef(null, GetTabTipWindowHandle()), out rect))
+            if (!GetWindowRect(new HandleRef(null, GetTabTipWindowHandle()), out RECT rect))
             {
                 if (previousTabTipRectangle.Equals(new Rectangle())) //in case TabTip was closed and previousTabTipRectangle was not set
                     Task.Delay(TimeSpan.FromSeconds(1)).ContinueWith(TryGetTabTipRectangleToСache);
@@ -160,8 +159,7 @@ namespace WPFTabTipMixedHardware
 
         private static void TryGetTabTipRectangleToСache(Task task)
         {
-            RECT rect;
-            if (GetWindowRect(new HandleRef(null, GetTabTipWindowHandle()), out rect))
+            if (GetWindowRect(new HandleRef(null, GetTabTipWindowHandle()), out RECT rect))
                 previousTabTipRectangle = new Rectangle(x: rect.Left, y: rect.Top, width: rect.Right - rect.Left + 1, height: rect.Bottom - rect.Top + 1);
         }
     }
