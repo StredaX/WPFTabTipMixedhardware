@@ -221,21 +221,17 @@ namespace WPFTabTipMixedHardware.Helpers
                 return;
 
             Storyboard moveRootVisualStoryboard = GetOrCreateMoveRootVisualStoryboard(rootVisual);
-
-            DoubleAnimation doubleAnimation = moveRootVisualStoryboard.Children.First() as DoubleAnimation;
-
-            if (doubleAnimation != null)
+            if (moveRootVisualStoryboard.Children.First() is DoubleAnimation doubleAnimation)
             {
-                Window window = rootVisual as Window;
-                if (window != null)
+                if (rootVisual is Window window)
                 {
-                    doubleAnimation.From = window.Top;
-                    doubleAnimation.To = window.Top + moveBy;
+                    doubleAnimation.From = GetValidDoubleValue(window.Top);
+                    doubleAnimation.To = GetValidDoubleValue(window.Top) + moveBy;
                 }
                 else
                 {
-                    doubleAnimation.From = doubleAnimation.To ?? 0;
-                    doubleAnimation.To = (doubleAnimation.To ?? 0) + moveBy;
+                    doubleAnimation.From = GetValidDoubleValue(doubleAnimation.To);
+                    doubleAnimation.To = GetValidDoubleValue(doubleAnimation.To) + moveBy;
                 }
             }
 
@@ -245,25 +241,29 @@ namespace WPFTabTipMixedHardware.Helpers
         private static void MoveRootVisualTo(FrameworkElement rootVisual, double moveTo)
         {
             Storyboard moveRootVisualStoryboard = GetOrCreateMoveRootVisualStoryboard(rootVisual);
-
-            DoubleAnimation doubleAnimation = moveRootVisualStoryboard.Children.First() as DoubleAnimation;
-
-            if (doubleAnimation != null)
+            if (moveRootVisualStoryboard.Children.FirstOrDefault() is DoubleAnimation doubleAnimation)
             {
-                Window window = rootVisual as Window;
-                if (window != null)
+                if (rootVisual is Window window)
                 {
-                    doubleAnimation.From = window.Top;
-                    doubleAnimation.To = moveTo;
+                    doubleAnimation.From = GetValidDoubleValue(window.Top);
+                    doubleAnimation.To = GetValidDoubleValue(moveTo);
                 }
                 else
                 {
-                    doubleAnimation.From = doubleAnimation.To ?? 0;
-                    doubleAnimation.To = moveTo;
+                    doubleAnimation.From = GetValidDoubleValue(doubleAnimation.To);
+                    doubleAnimation.To = GetValidDoubleValue(moveTo);
                 }
             }
 
             moveRootVisualStoryboard.Begin();
+        }
+
+        private static double GetValidDoubleValue(double? from)
+        {
+            if (from.HasValue && from.Value != double.NaN)
+                return from.Value;
+
+            return 0;
         }
 
         internal static void GetUIElementInToWorkAreaWithTabTipOpened(UIElement element)
@@ -274,8 +274,7 @@ namespace WPFTabTipMixedHardware.Helpers
                 Rectangle workAreaWithTabTipOpened = GetWorkAreaWithTabTipOpened(element);
 
                 Rectangle uiElementRectangle;
-                Window window = rootVisualForAnimation as Window;
-                if (window != null && workAreaWithTabTipOpened.Height >= window.Height)
+                if (rootVisualForAnimation is Window window && workAreaWithTabTipOpened.Height >= window.Height)
                     uiElementRectangle = GetWindowRectangle(window);
                 else
                     uiElementRectangle = GetUIElementRect(element);
@@ -307,9 +306,8 @@ namespace WPFTabTipMixedHardware.Helpers
             {
                 foreach (KeyValuePair<FrameworkElement, Storyboard> moveRootVisualStoryboard in MoveRootVisualStoryboards)
                 {
-                    Window window = moveRootVisualStoryboard.Key as Window;
                     // if window exist also check if it has not been closed
-                    if (window != null && new WindowInteropHelper(window).Handle != IntPtr.Zero)
+                    if (moveRootVisualStoryboard.Key is Window window && new WindowInteropHelper(window).Handle != IntPtr.Zero)
                         MoveRootVisualBy(
                             rootVisual: window,
                             moveBy: GetYOffsetToMoveUIElementInToWorkArea(

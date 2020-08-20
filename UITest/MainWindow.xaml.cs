@@ -19,6 +19,7 @@ namespace UITest
         {
             InitializeComponent();
 
+            TabTipAutomation.AutomationTriggers = TabTipAutomationTrigger.OnMouse | TabTipAutomationTrigger.OnTouch;
             TabTipAutomation.BindTo<TextBox>();
             TabTipAutomation.BindTo<RichTextBox>();
             TabTipAutomation.ExceptionCatched += TabTipAutomationOnTest;
@@ -56,5 +57,13 @@ namespace UITest
         private void btn_NewWindow_OnClick(object sender, RoutedEventArgs e) => new DialogWindow().Show();
 
         private void btn_KeyboardDescriptions_OnClick(object sender, RoutedEventArgs e) => GetKeyboardDescriptions();
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkBox)
+            {
+                checkBox.IsChecked = TabTipAutomation.IsEnabled = !TabTipAutomation.IsEnabled;
+            }
+        }
     }
 }

@@ -3,7 +3,8 @@ Simple TabTip / Virtual Keyboard integration for WPF apps with touchscreen and/o
 
 ## Package
 
-Available via [nuget](https://www.nuget.org/packages/WPFTabTipMixedHardware/) ![Nuget](https://img.shields.io/nuget/v/WPFTabTipMixedHardware)
+Available via [nuget](https://www.nuget.org/packages/WPFTabTipMixedHardware/) ![Nuget](https://img.shields.io/nuget/v/WPFTabTipMixedHardware) ![Nuget](https://img.shields.io/nuget/vpre/WPFTabTipMixedHardware)
+
 ## Getting started
 
 You can bind TabTip automation logic to any `UIElement`. Virtual Keyboard will open when any such element will get touched/clicker/focused, and it will close when element will lose focus. Not only that, but `TabTipAutomation` will move `UIElement` (or `Window`) into  view, so that TabTip will not block focused element.

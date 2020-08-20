@@ -68,6 +68,12 @@ namespace WPFTabTipMixedHardware
         public static TimeSpan WaitBeforeCloseKeyboard { get; set; } = TimeSpan.FromMilliseconds(100);
 
         /// <summary>
+        /// Describe the activation state of the TabTipAutomation functionnality.
+        /// Default value is True
+        /// </summary>
+        public static bool IsEnabled { get; set; } = true;
+
+        /// <summary>
         /// Subscribe to this event if you want to know about exceptions (errors) in this library
         /// </summary>
         public static event Action<Exception> ExceptionCatched;
@@ -95,23 +101,26 @@ namespace WPFTabTipMixedHardware
 
         private static bool AnotherAuthorizedElementFocused()
         {
-            try
+            if (IsEnabled)
             {
-                IInputElement inputElement = null;
-                Application.Current?.Dispatcher?.Invoke(() =>
+                try
                 {
-                    inputElement = Keyboard.FocusedElement;
-                });
+                    IInputElement inputElement = null;
+                    Application.Current?.Dispatcher?.Invoke(() =>
+                    {
+                        inputElement = Keyboard.FocusedElement;
+                    });
 
-                if (inputElement is UIElement element)
-                {
-                    var type = inputElement.GetType();
-                    return BindedUIElements.Any(t => t == type || type.IsAssignableFrom(t) || t.IsAssignableFrom(type));
+                    if (inputElement is UIElement element)
+                    {
+                        var type = inputElement.GetType();
+                        return BindedUIElements.Any(t => t == type || type.IsAssignableFrom(t) || t.IsAssignableFrom(type));
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                ExceptionCatched?.Invoke(ex);
+                catch (Exception ex)
+                {
+                    ExceptionCatched?.Invoke(ex);
+                }
             }
 
             return false;
@@ -130,7 +139,7 @@ namespace WPFTabTipMixedHardware
 
         private static void TouchDownRoutedEventHandler(object sender, RoutedEventArgs eventArgs)
         {
-            if (sender is UIElement element)
+            if (sender is UIElement element && IsEnabled)
             {
                 System.Diagnostics.Debug.WriteLine($"TouchDownEvent on type {element.GetType()} from {element.ToString()}");
                 FocusSubject.OnNext(new Tuple<UIElement, bool>(element, true));
@@ -167,7 +176,7 @@ namespace WPFTabTipMixedHardware
                                 routedEvent: UIElement.PreviewMouseDownEvent,
                                 handler: new RoutedEventHandler((s, e) =>
                                 {
-                                    if (s is UIElement element)
+                                    if (s is UIElement element && IsEnabled)
                                     {
                                         System.Diagnostics.Debug.WriteLine($"PreviewMouseDownEvent on type {element.GetType()} from {element.GetHashCode()} Source:{e.Source} OriginalSource:{e.OriginalSource}");
                                         FocusSubject.OnNext(new Tuple<UIElement, bool>(element, true));
@@ -183,7 +192,7 @@ namespace WPFTabTipMixedHardware
                                 routedEvent: UIElement.GotFocusEvent,
                                 handler: new RoutedEventHandler((s, e) =>
                                 {
-                                    if (s is UIElement element)
+                                    if (s is UIElement element && IsEnabled)
                                     {
                                         System.Diagnostics.Debug.WriteLine($"GotFocusEvent on type {element.GetType()} from {element.ToString()}");
                                         FocusSubject.OnNext(new Tuple<UIElement, bool>(element, true));
@@ -197,7 +206,7 @@ namespace WPFTabTipMixedHardware
                 routedEvent: UIElement.LostFocusEvent,
                 handler: new RoutedEventHandler((s, e) =>
                 {
-                    if (s is UIElement element)
+                    if (s is UIElement element && IsEnabled)
                     {
                         System.Diagnostics.Debug.WriteLine($"LostFocusEvent on type {element.GetType()} from {element.ToString()}");
                         FocusSubject.OnNext(new Tuple<UIElement, bool>(element, false));

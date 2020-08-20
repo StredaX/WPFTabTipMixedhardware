@@ -2,25 +2,44 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UITest"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        Title="MainWindow"
+        Width="525"
+        Height="350"
+        mc:Ignorable="d">
     <Grid x:Name="LayoutRoot">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <RichTextBox Grid.ColumnSpan="3" InputScope="Url"/>
-        <Button Grid.Row="1" Content="Do Nothing"/>
-        <Button Grid.Row="1" x:Name="btn_NewWindow" Content="New Window" Grid.Column="1" Click="btn_NewWindow_OnClick"/>
-        <Button Grid.Row="1" x:Name="btn_KeyboardDescriptions" Content="Get Keyboard Descriptions" Grid.Column="2" Click="btn_KeyboardDescriptions_OnClick"/>
-        <TextBox Grid.Row="2" Grid.ColumnSpan="3" InputScope="Number"/>
+        <RichTextBox Grid.ColumnSpan="3"
+                     InputScope="Url" />
+        <Button Grid.Row="1"
+                Content="Do Nothing" />
+        <Button x:Name="btn_NewWindow"
+                Grid.Row="1"
+                Grid.Column="1"
+                Click="btn_NewWindow_OnClick"
+                Content="New Window" />
+        <Button x:Name="btn_KeyboardDescriptions"
+                Grid.Row="1"
+                Grid.Column="2"
+                Click="btn_KeyboardDescriptions_OnClick"
+                Content="Get Keyboard Descriptions" />
+        <TextBox Grid.Row="2"
+                 Grid.ColumnSpan="3"
+                 InputScope="Number" />
+        <CheckBox Grid.Row="3"
+                  Click="CheckBox_Click"
+                  Content="TabTipAutomation Enabled"
+                  IsChecked="True" />
     </Grid>
 </Window>
