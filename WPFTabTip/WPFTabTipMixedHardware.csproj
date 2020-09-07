@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>net47</TargetFrameworks>
     <Title>WPFTabTipMixedHardware</Title>
-    <Version>1.3.4-alpha</Version>
+    <Version>1.3.4</Version>
     <Copyright></Copyright>
     <Description>Simple TabTip / Virtual Keyboard integration for WPF apps with mixed Keyboard and Touchscreen</Description>
     <Authors>Morgan SOULLEZ</Authors>
