@@ -14,6 +14,7 @@ namespace WPFTabTipMixedHardware.Helpers
         private const string TabTipWindowClassName = "IPTip_Main_Window";
         private const string TabTipExecPath = @"C:\Program Files\Common Files\microsoft shared\ink\TabTip.exe";
         private const string TabTipRegistryKeyName = @"HKEY_CURRENT_USER\Software\Microsoft\TabletTip\1.7";
+        internal const string TabTipProcessName = "TabTip";
 
         [DllImport("user32.dll")]
         private static extern int SendMessage(int hWnd, uint msg, int wParam, int lParam);
@@ -78,16 +79,20 @@ namespace WPFTabTipMixedHardware.Helpers
         public static void OpenUndocked()
         {
             const string TabTipDockedKey = "EdgeTargetDockedState";
-            const string TabTipProcessName = "TabTip";
 
             int docked = (int)(Registry.GetValue(TabTipRegistryKeyName, TabTipDockedKey, 1) ?? 1);
             if (docked == 1)
             {
                 Registry.SetValue(TabTipRegistryKeyName, TabTipDockedKey, 0);
-                foreach (Process tabTipProcess in Process.GetProcessesByName(TabTipProcessName))
-                    tabTipProcess.Kill();
+                KillTapTibProcess();
             }
             Open();
+        }
+
+        internal static void KillTapTibProcess()
+        {
+            foreach (Process tabTipProcess in Process.GetProcessesByName(TabTipProcessName))
+                tabTipProcess.Kill();
         }
 
         /// <summary>
@@ -119,7 +124,7 @@ namespace WPFTabTipMixedHardware.Helpers
         }
 
         // ReSharper disable once UnusedMember.Local
-        private static bool IsTabTipProcessRunning => GetTabTipWindowHandle() != IntPtr.Zero;
+        public static bool IsTabTipProcessRunning => GetTabTipWindowHandle() != IntPtr.Zero;
 
         /// <summary>
         /// Gets TabTip Window Rectangle

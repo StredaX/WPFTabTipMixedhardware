@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Management;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -31,6 +32,7 @@ namespace WPFTabTipMixedHardware
 
         private static readonly Subject<Tuple<UIElement, bool>> FocusSubject = new Subject<Tuple<UIElement, bool>>();
         private static readonly Subject<bool> TabTipClosedSubject = new Subject<bool>();
+        private static ManagementEventWatcher _tabTipStartWatcher;
 
         private static readonly List<Type> BindedUIElements = new List<Type>();
 
@@ -67,11 +69,74 @@ namespace WPFTabTipMixedHardware
         /// </summary>
         public static TimeSpan WaitBeforeCloseKeyboard { get; set; } = TimeSpan.FromMilliseconds(100);
 
+        private static bool _autoCloseTabTipWhenDisabled = true;
+
+        /// <summary>
+        /// Define the auto close behavior during a disabled scenari (<seealso cref="IsEnabled" /> = false)
+        /// </summary>
+        public static bool AutoCloseTabTipWhenDisabled
+        {
+            get => _autoCloseTabTipWhenDisabled;
+            set
+            {
+                if (_autoCloseTabTipWhenDisabled != value)
+                {
+                    _autoCloseTabTipWhenDisabled = value;
+                    if (!IsEnabled)
+                    {
+                        if (AutoCloseTabTipWhenDisabled)
+                            StartTabTipStartWatcher();
+                        else
+                            StopTabTipStartWatcher();
+                    }
+                }
+            }
+        }
+
+        private static bool _isEnabled = true;
+
         /// <summary>
         /// Describe the activation state of the TabTipAutomation functionnality.
         /// Default value is True
         /// </summary>
-        public static bool IsEnabled { get; set; } = true;
+        public static bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                if (_isEnabled != value)
+                {
+                    _isEnabled = value;
+                    if (_isEnabled)
+                        StopTabTipStartWatcher();
+                    else if (AutoCloseTabTipWhenDisabled)
+                        StartTabTipStartWatcher();
+                }
+            }
+        }
+
+        private static void StartTabTipStartWatcher()
+        {
+            _tabTipStartWatcher = new ManagementEventWatcher($"SELECT * FROM __InstanceCreationEvent WITHIN 1 WHERE TargetInstance ISA 'Win32_Process' AND TargetInstance.Name = '{TabTip.TabTipProcessName}.exe'");
+            _tabTipStartWatcher.EventArrived += TabTibStarted;
+            _tabTipStartWatcher.Start();
+            TabTip.KillTapTibProcess();
+        }
+
+        private static void StopTabTipStartWatcher()
+        {
+            if (_tabTipStartWatcher != null)
+            {
+                _tabTipStartWatcher.Stop();
+                _tabTipStartWatcher.Dispose();
+                _tabTipStartWatcher = null;
+            }
+        }
+
+        private static void TabTibStarted(object sender, EventArrivedEventArgs e)
+        {
+            TabTip.KillTapTibProcess();
+        }
 
         /// <summary>
         /// Subscribe to this event if you want to know about exceptions (errors) in this library

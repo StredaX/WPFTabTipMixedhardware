@@ -3,7 +3,7 @@ Simple TabTip / Virtual Keyboard integration for WPF apps with touchscreen and/o
 
 ## Package
 
-Available via [nuget](https://www.nuget.org/packages/WPFTabTipMixedHardware/) ![Nuget](https://img.shields.io/nuget/v/WPFTabTipMixedHardware) ![Nuget](https://img.shields.io/nuget/vpre/WPFTabTipMixedHardware)
+Available via [nuget](https://www.nuget.org/packages/WPFTabTipMixedHardware/) ![Nuget](https://img.shields.io/nuget/v/WPFTabTipMixedHardware) 
 
 ## Getting started
 
@@ -72,6 +72,9 @@ new ManagementObjectSearcher(new SelectQuery("Win32_Keyboard")).Get()
                 .ToList();
 ```
 
+You can temporarily disable the functionnality using the `IsEnabled` property (default value true).  
+During a disable scenario the TabTip keyboard wont show (included in other application). To change this behavior you must set `AutoCloseTabTipWhenDisabled` to false.
+
 ### Change keyboard layout
 
 To specify keyboard layout to be used with certain element you can set `InputScope` property in xaml to one of the following:
@@ -79,6 +82,8 @@ To specify keyboard layout to be used with certain element you can set `InputSco
 - Url
 - EmailSmtpAddress
 - Number
+
+More value available in [.Net documentation](https://docs.microsoft.com/fr-fr/dotnet/api/system.windows.input.inputscopenamevalue?view=netframework-4.8).
 
 ## Test
 You can test the behaviors with the included test application. Set UITest project as 'Set as startup projet' and run. 
