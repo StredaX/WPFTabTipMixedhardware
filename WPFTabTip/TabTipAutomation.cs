@@ -28,6 +28,7 @@ namespace WPFTabTipMixedHardware
             AutomateTabTipClose(FocusSubject.AsObservable(), TabTipClosedSubject);
 
             AnimationHelper.ExceptionCatched += exception => ExceptionCatched?.Invoke(exception);
+            TabTip.ExceptionCatched += exception => ExceptionCatched?.Invoke(exception);
         }
 
         private static readonly Subject<Tuple<UIElement, bool>> FocusSubject = new Subject<Tuple<UIElement, bool>>();
