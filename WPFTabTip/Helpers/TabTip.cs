@@ -39,7 +39,7 @@ namespace WPFTabTipMixedHardware.Helpers
         private static extern UInt32 GetWindowLong(IntPtr hWnd, int nIndex);
 
         /// <summary>
-        /// Signals that TabTip was closed after it was opened 
+        /// Signals that TabTip was closed after it was opened
         /// with a call to StartPoolingForTabTipClosedEvent method
         /// </summary>
         internal static event Action Closed;
@@ -65,7 +65,7 @@ namespace WPFTabTipMixedHardware.Helpers
 
             try
             {
-                Process.Start(TabTipExecPath);
+                Process.Start(new ProcessStartInfo(TabTipExecPath){ UseShellExecute = true });
             }
             catch (Exception ex)
             {

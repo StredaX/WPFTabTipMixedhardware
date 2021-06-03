@@ -160,9 +160,7 @@ namespace WPFTabTipMixedHardware
                 .Do(_ => TabTip.Close())
                 .Subscribe(_ => tabTipClosedSubject.OnNext(true));
 
-            tabTipClosedSubject
-                .ObserveOnDispatcher()
-                .Subscribe(_ => AnimationHelper.GetEverythingInToWorkAreaWithTabTipClosed());
+            tabTipClosedSubject.Subscribe(_ => AnimationHelper.GetEverythingInToWorkAreaWithTabTipClosed());
         }
 
         private static bool AnotherAuthorizedElementFocused()
@@ -198,8 +196,7 @@ namespace WPFTabTipMixedHardware
                 .ObserveOn(Scheduler.Default)
                 .Where(_ => IgnoreHardwareKeyboard == HardwareKeyboardIgnoreOptions.IgnoreAll || !HardwareKeyboard.IsConnectedAsync().Result)
                 .Where(tuple => tuple.Item2 == true)
-                .Do(_ => TabTip.OpenUndockedAndStartPoolingForClosedEvent())
-                .ObserveOnDispatcher()
+                .Do(_ => TabTip.OpenUndockedAndStartPoolingForClosedEvent())    
                 .Subscribe(tuple => AnimationHelper.GetUIElementInToWorkAreaWithTabTipOpened(tuple.Item1));
         }
 
