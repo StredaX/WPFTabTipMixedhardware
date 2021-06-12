@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net47</TargetFrameworks>
+    <TargetFrameworks>net472;net48;netcoreapp3.1;net5.0-windows</TargetFrameworks>
     <Title>WPFTabTipMixedHardware</Title>
-    <Version>1.3.5</Version>
+    <Version>1.3.6</Version>
     <Copyright></Copyright>
     <Description>Simple TabTip / Virtual Keyboard integration for WPF apps with mixed Keyboard and Touchscreen</Description>
     <Authors>Morgan SOULLEZ</Authors>
@@ -10,29 +10,27 @@
     <PackageProjectUrl>https://github.com/seuleuzeuh/WPFTabTipMixedhardware/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/seuleuzeuh/WPFTabTipMixedhardware/</RepositoryUrl>
     <PackageTags>WPF Touchscreen TabTip Keyboard Virtual W10</PackageTags>
-    <PackageReleaseNotes>- Process and Registry access securing</PackageReleaseNotes>
-    <AssemblyVersion>1.3.5</AssemblyVersion>
-    <FileVersion>1.3.5</FileVersion>
+    <PackageReleaseNotes>- Fixing Tabtip not opening in Win10
+- Updating the project to target .NetFramework, .NetCore and .Net5</PackageReleaseNotes>
+    <AssemblyVersion>1.3.6</AssemblyVersion>
+    <FileVersion>1.3.6</FileVersion>
+    <UseWPF>true</UseWPF>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Reactive.Core" Version="4.4.1" />
-    <PackageReference Include="System.Reactive.Interfaces" Version="4.4.1" />
-    <PackageReference Include="System.Reactive.Linq" Version="4.4.1" />
-    <PackageReference Include="System.Reactive.PlatformServices" Version="4.4.1" />
-    <PackageReference Include="System.Reactive.Windows.Threading" Version="4.4.1" />
+    <PackageReference Include="System.Reactive" Version="5.0.0" />
+    <PackageReference Include="System.Reactive.Compatibility" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System.Management" />
-    <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\LICENSE.md">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>
+      </PackagePath>
     </None>
   </ItemGroup>
 </Project>

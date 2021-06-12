@@ -87,3 +87,10 @@ More value available in [.Net documentation](https://docs.microsoft.com/fr-fr/do
 
 ## Test
 You can test the behaviors with the included test application. Set UITest project as 'Set as startup projet' and run. 
+
+## Framework Support
+
+.Net Framework 4.72
+.Net Framework 4.8
+.Net Core 3.1
+.Net 5.0-windows
