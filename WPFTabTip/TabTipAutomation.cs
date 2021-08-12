@@ -158,10 +158,11 @@ namespace WPFTabTipMixedHardware
                 .Throttle(WaitBeforeCloseKeyboard) // Close only if no other UIElement got focus in `WaitBeforeCloseKeyboard` ms
                 .Where(tuple => tuple.Item2 == false && !AnotherAuthorizedElementFocused())
                 .Do(_ => TabTip.Close())
-                .ObserveOnDispatcher()
                 .Subscribe(_ => tabTipClosedSubject.OnNext(true));
 
-            tabTipClosedSubject.Subscribe(_ => AnimationHelper.GetEverythingInToWorkAreaWithTabTipClosed());
+            tabTipClosedSubject
+                .ObserveOnDispatcher()
+                .Subscribe(_ => AnimationHelper.GetEverythingInToWorkAreaWithTabTipClosed());
         }
 
         private static bool AnotherAuthorizedElementFocused()
