@@ -2,21 +2,23 @@
   <PropertyGroup>
     <TargetFrameworks>net472;net48;netcoreapp3.1</TargetFrameworks>
     <Title>WPFTabTipMixedHardware</Title>
-    <Version>1.3.6</Version>
+    <Version>1.0.1</Version>
     <Copyright></Copyright>
     <Description>Simple TabTip / Virtual Keyboard integration for WPF apps with mixed Keyboard and Touchscreen</Description>
-    <Authors>Morgan SOULLEZ</Authors>
-    <Company>Morgan SOULLEZ</Company>
-    <PackageProjectUrl>https://github.com/seuleuzeuh/WPFTabTipMixedhardware/</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/seuleuzeuh/WPFTabTipMixedhardware/</RepositoryUrl>
-    <PackageTags>WPF Touchscreen TabTip Keyboard Virtual W10</PackageTags>
+    <Authors>StredaX</Authors>
+    <Company>StredaX</Company>
+    <PackageProjectUrl>https://github.com/StredaX/WPFTabTipMixedhardware</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/StredaX/WPFTabTipMixedhardware</RepositoryUrl>
+    <PackageTags>WPF Touchscreen TabTip Keyboard Virtual Win10</PackageTags>
     <PackageReleaseNotes>- Fixing Tabtip not opening in Win10
-- Updating the project to target .NetFramework, .NetCore and .Net5</PackageReleaseNotes>
-    <AssemblyVersion>1.3.6</AssemblyVersion>
-    <FileVersion>1.3.6</FileVersion>
+- Updating the project to target .NetFramework, .NetCore</PackageReleaseNotes>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
     <UseWPF>true</UseWPF>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>WPFTabTipAutomation</PackageId>
+    <Product>WPFTabTipAutomation</Product>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="System.Reactive" Version="4.4.1" />
